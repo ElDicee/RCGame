@@ -1,0 +1,18 @@
+<RCGame>
+    ansLabel: ansLabel
+    inptxt: textInp
+    displayImg: displayImage
+    orientation: "vertical"
+    Image:
+        id: displayImage
+        source: root.img.path
+    TextInput:
+        id: textInp
+        text: "Answer"
+    Button:
+        text: "CHECK ANSWER"
+        on_press: root.checkAns()
+    Label:
+        id: ansLabel
+        text: "TEST LABEL"
+        font_size: 70
