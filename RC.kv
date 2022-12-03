@@ -1,11 +1,26 @@
+<StarterMenu>
+    orientation: "vertical"
+    canvas:
+
+    Image:
+        source: "R/StarterMenu/HeaderImage.jpg"
+    Label:
+        text: "Welcome!"
+    Button:
+        text: "PLAY"
+        on_press: root.parent.showGame()
+
 <RCGame>
     ansLabel: ansLabel
     inptxt: textInp
     displayImg: displayImage
+    correctLabel: correctLabel
     orientation: "vertical"
     Image:
         id: displayImage
         source: root.img.path
+        center_x: root.width/2
+        center_y: root.height/2
     TextInput:
         id: textInp
         text: "Answer"
@@ -16,3 +31,7 @@
         id: ansLabel
         text: "TEST LABEL"
         font_size: 70
+    Label:
+        id: correctLabel
+        text: ""
+        font_size: 50

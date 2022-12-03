@@ -1,11 +1,10 @@
 from kivy.app import App
 from kivy.uix.boxlayout import BoxLayout
-from kivy.uix.widget import ObjectProperty
+from kivy.uix.widget import ObjectProperty, Widget
 from os import listdir
 from random import choice
 from kivy.clock import Clock
 from enum import Enum
-
 
 class DImage():
     def __init__(self, path):
@@ -16,10 +15,35 @@ class DImage():
         self.id = self.name.split("-")[0]
 
 
+class rootWidget(Widget):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.center_x = self.width/2
+        self.center_y = self.height/2
+        self.active_widgets = []
+        self.showStarterMenu()
+
+    def showStarterMenu(self):
+        for i in self.active_widgets:
+            self.remove_widget(i)
+        sm = StarterMenu()
+        sm.center_x = self.center_x
+        sm.center_y = self.center_y
+        sm.size = self.size
+        self.add_widget(sm)
+    def showGame(self):
+        for i in self.active_widgets:
+            self.remove_widget(i)
+        self.add_widget(RCGame())
+
+class StarterMenu(BoxLayout):
+    pass
+
 class RCGame(BoxLayout):
     inptxt = ObjectProperty(None)
     ansLabel = ObjectProperty(None)
     displayImg = ObjectProperty(None)
+    correctLabel = ObjectProperty(None)
     img = DImage("images/" + choice(listdir("images")))
 
     def nextImage(self, time):
@@ -30,6 +54,7 @@ class RCGame(BoxLayout):
             l.remove(self.img.extensionName)
         self.img = DImage("images/" + choice(l))
         self.ansLabel.text = ""
+        self.correctLabel.text = ""
         self.displayImg.source = self.img.path
 
     def checkAns(self):
@@ -43,6 +68,7 @@ class RCGame(BoxLayout):
                 self.ansLabel.text = "WRONG"
                 self.ansLabel.color = Color.RED.value
                 self.inptxt.text = ""
+                self.correctLabel.text = self.img.tag
             self.img.path = ""
             Clock.schedule_once(callback=self.nextImage, timeout=1.5)
         else:
@@ -51,8 +77,8 @@ class RCGame(BoxLayout):
 
 class RCApp(App):
     def build(self):
-        game = RCGame()
-        return game
+        root = rootWidget()
+        return root
 
 
 class Color(Enum):
